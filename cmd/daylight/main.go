@@ -58,7 +58,7 @@ func main() {
 
 	if args.Short {
 		output = fmt.Sprintf(
-			"Rises:  %s\nSets:   %s\nLength: %s\nChange:  %s", 
+			"Rises:  %s\nSets:   %s\nLength: %s\nChange:  %s",
 			viewmodel.Rise, viewmodel.Sets, viewmodel.Len, viewmodel.Diff,
 		)
 	} else if daylight.UsePrettyMode() {
@@ -68,6 +68,9 @@ func main() {
 	}
 
 	fmt.Println(output)
+
+	renders := render(viewmodel)
+	fmt.Println(renders)
 }
 
 func checkErr(err error) {
