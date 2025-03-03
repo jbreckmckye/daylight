@@ -9,7 +9,15 @@ import (
 )
 
 const (
-	width = 96
+	width = 100
+
+	brightBlue  = lipgloss.Color("#005FFF")
+	brightGreen = "#00aF00"
+	goldYellow  = lipgloss.Color("#FDC400")
+	offWhite    = "#FFFDF5"
+	pink        = lipgloss.Color("#A550DF")
+	purple      = "#6124DF"
+	midGrey     = lipgloss.Color("#525250")
 )
 
 var (
@@ -25,8 +33,8 @@ var (
 
 	locationTagStyle = lipgloss.NewStyle().
 		Inherit(statusBarStyle).
-		Foreground(lipgloss.Color("#FFFDF5")).
-		Background(lipgloss.Color("#004889")).
+		Foreground(lipgloss.Color(offWhite)).
+		Background(lipgloss.Color(brightGreen)).
 		Padding(0, 1).
 		MarginRight(1)
 
@@ -39,11 +47,11 @@ var (
 
 	// rename
 	ipValStyle = ipBlockStyles.
-		Background(lipgloss.Color("#A550DF")).
+		Background(goldYellow).
 		Align(lipgloss.Right)
 
 	// rename
-	ipTagStyle = ipBlockStyles.Background(lipgloss.Color("#6124DF"))
+	ipTagStyle = ipBlockStyles.Background(brightBlue)
 )
 
 func render(viewmodel internal.TodayViewModel) string {
@@ -51,8 +59,6 @@ func render(viewmodel internal.TodayViewModel) string {
 
 	w := lipgloss.Width
 
-	titleBar := titleBarStyle.Width(width).Render("Daylight")
-	doc.WriteString(titleBar + "\n\n")
 	ipT := ipTagStyle.Render("IP ADDRESS")
 	ipV := ipValStyle.Render(viewmodel.IP)
 
@@ -69,6 +75,49 @@ func render(viewmodel internal.TodayViewModel) string {
 		ipV,
 	)
 
-	doc.WriteString(statusBarStyle.Width(width).Render(statusBar))
+	doc.WriteString(title())
+	doc.WriteString(subHead())
+	doc.WriteString("rises, noon, sets, length \n")
+	doc.WriteString("progress bar thing \n")
+	doc.WriteString(tableHead())
+	doc.WriteString("date, rises, sets, length \n")
+	doc.WriteString(statusBarStyle.Width(width).Render(statusBar) + "\n")
+	doc.WriteString(linkString())
 	return doc.String()
+}
+
+func title() string {
+	style := lipgloss.NewStyle().
+		BorderStyle(lipgloss.DoubleBorder()).
+		BorderForeground(goldYellow).
+		BorderBottom(true).
+		Foreground(goldYellow)
+
+	return style.Width(width).Render("Daylight") + "\n"
+}
+
+func subHead() string {
+	style := lipgloss.NewStyle().
+		BorderBottom(true).
+		Foreground(brightBlue).
+		Padding(1, 0, 0, 0)
+
+	return style.Width(width).Render("Today's sun times") + "\n"
+}
+
+func tableHead() string {
+	style := lipgloss.NewStyle().
+		Foreground(brightBlue).
+		Padding(1, 0, 0, 0)
+
+	return style.Width(width).Render("10-day view") + "\n"
+}
+
+func linkString() string {
+	style := lipgloss.NewStyle().
+		Width(width).
+		Foreground(pink).
+		Padding(1, 0, 0)
+
+	return style.Render("https://github.com/jbreckmckye/daylight") + "\n"
 }
