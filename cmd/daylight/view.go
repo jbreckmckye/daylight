@@ -14,10 +14,12 @@ const (
 	brightBlue  = lipgloss.Color("#005FFF")
 	brightGreen = "#00aF00"
 	goldYellow  = lipgloss.Color("#FDC400")
+	sunYellow   = lipgloss.Color("#EDFF82")
 	offWhite    = "#FFFDF5"
 	pink        = lipgloss.Color("#A550DF")
 	purple      = "#6124DF"
 	midGrey     = lipgloss.Color("#525250")
+	dimGrey     = lipgloss.Color("#353533")
 )
 
 var (
@@ -77,6 +79,7 @@ func render(viewmodel internal.TodayViewModel) string {
 
 	doc.WriteString(title())
 	doc.WriteString(subHead())
+	doc.WriteString(today())
 	doc.WriteString("rises, noon, sets, length \n")
 	doc.WriteString("progress bar thing \n")
 	doc.WriteString(tableHead())
@@ -103,6 +106,46 @@ func subHead() string {
 		Padding(1, 0, 0, 0)
 
 	return style.Width(width).Render("Today's sun times") + "\n"
+}
+
+func today() string {
+	graphic := lipgloss.NewStyle().
+		Align(lipgloss.Left).
+		Width(16)
+
+	col := lipgloss.NewStyle().
+		Align(lipgloss.Left).
+		Width(25).
+		Height(8)
+
+	rises := drawPixels(sunrise)
+	sets := drawPixels(sunset)
+
+	return lipgloss.JoinHorizontal(lipgloss.Top,
+		graphic.Render(rises),
+		col.Align(lipgloss.Left).Render("Rises at"),
+		graphic.Render(sets),
+		col.Align(lipgloss.Left).Render("sets at"),
+		col.Align(lipgloss.Right).Render("LENGTH------------------"))
+	// ════════════════════════════════════════════════════════════════════════════════════════════════════
+	//  RISES--------------------  NOON---------------------  SETS---------------------  LENGTH------------------ .
+}
+
+func drawPixels(px [][]uint) string {
+	builder := strings.Builder{}
+	style := lipgloss.NewStyle()
+
+	for _, row := range px {
+		for j, cell := range row {
+			colour := lipgloss.Color(ABGRtoHex(cell))
+			builder.WriteString(style.Background(colour).Render("  "))
+			if j == len(row)-1 {
+				builder.WriteString("\n")
+			}
+		}
+	}
+
+	return builder.String()
 }
 
 func tableHead() string {
