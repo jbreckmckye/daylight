@@ -2,7 +2,42 @@ package main
 
 import "fmt"
 
+// ABGR is the format used by Piskel when exporting to C
 type ABGR = uint
+
+// ABGRtoHex takes an alpha-blue-green-red and reverses it to red-green-blue-alpha.
+func ABGRtoHex(a ABGR) string {
+	blue := a & 0x00FF0000
+	green := a & 0x0000FF00
+	red := a & 0x000000FF
+
+	rgb := (blue >> 16) | green | (red << 16)
+	return fmt.Sprintf("#%x", rgb)
+}
+
+var sunsetGradient = [][]ABGR{
+	{0xff6fdbfd, 0xff6fdbfd, 0xff6fdbfd, 0xff6fdbfd},
+	{0xff70aefc, 0xff70aefc, 0xff70aefc, 0xff70aefc},
+	{0xff6d8ffa, 0xff6d8ffa, 0xff6d8ffa, 0xff6d8ffa},
+	{0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8},
+	{0xff9172b2, 0xff9172b2, 0xff9172b2, 0xff9172b2},
+}
+
+var sunriseGradient = [][]ABGR{
+	{0xff9172b2, 0xff9172b2, 0xff9172b2, 0xff9172b2},
+	{0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8},
+	{0xff6d8ffa, 0xff6d8ffa, 0xff6d8ffa, 0xff6d8ffa},
+	{0xff70aefc, 0xff70aefc, 0xff70aefc, 0xff70aefc},
+	{0xff6fdbfd, 0xff6fdbfd, 0xff6fdbfd, 0xff6fdbfd},
+}
+
+var noonGradient = [][]ABGR{
+	{0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff},
+	{0xff82eefc, 0xff82eefc, 0xff82eefc, 0xff82eefc},
+	{0xffb9f0ff, 0xffb9f0ff, 0xffb9f0ff, 0xffb9f0ff},
+	{0xfff4c688, 0xfff4c688, 0xfff4c688, 0xfff4c688},
+	{0xffea9d36, 0xffea9d36, 0xffea9d36, 0xffea9d36},
+}
 
 var sunrise = [][]ABGR{
 	{0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8},
@@ -24,14 +59,4 @@ var sunset = [][]ABGR{
 	{0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8, 0xff6d78f8},
 	{0xff907ddb, 0xff907ddb, 0xff907ddb, 0xff907ddb, 0xff907ddb, 0xff907ddb, 0xff907ddb, 0xff907ddb},
 	{0xff9172b2, 0xff9172b2, 0xff9172b2, 0xff9172b2, 0xff9172b2, 0xff9172b2, 0xff9172b2, 0xff9172b2},
-}
-
-// ABGRtoHex takes an alpha-blue-green-red and reverses it to red-green-blue-alpha.
-func ABGRtoHex(a ABGR) string {
-	blue := a & 0x00FF0000
-	green := a & 0x0000FF00
-	red := a & 0x000000FF
-
-	rgb := (blue >> 16) | green | (red << 16)
-	return fmt.Sprintf("#%x", rgb)
 }

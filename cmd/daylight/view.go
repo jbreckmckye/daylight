@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	width = 100
+	width = 75
 
 	brightBlue  = lipgloss.Color("#005FFF")
 	brightGreen = "#00aF00"
@@ -24,10 +24,12 @@ const (
 
 var (
 	titleBarStyle = lipgloss.NewStyle().
-		BorderStyle(lipgloss.ThickBorder()).
-		BorderForeground(lipgloss.Color("#87CEEB")).
+		BorderStyle(lipgloss.DoubleBorder()).
+		BorderForeground(goldYellow).
 		BorderBottom(true).
-		Foreground(lipgloss.Color("#87CEEB"))
+		MarginBottom(1).
+		Foreground(goldYellow).
+		Width(width)
 
 	statusBarStyle = lipgloss.NewStyle().
 		Foreground(lipgloss.AdaptiveColor{Light: "#343433", Dark: "#C1C6B2"}).
@@ -77,9 +79,12 @@ func render(viewmodel internal.TodayViewModel) string {
 		ipV,
 	)
 
-	doc.WriteString(title())
-	doc.WriteString(subHead())
+	doc.WriteString(todayTitle())
 	doc.WriteString(today())
+
+	doc.WriteString(lengthTitle())
+	doc.WriteString(dayLength())
+
 	doc.WriteString("rises, noon, sets, length \n")
 	doc.WriteString("progress bar thing \n")
 	doc.WriteString(tableHead())
@@ -89,46 +94,48 @@ func render(viewmodel internal.TodayViewModel) string {
 	return doc.String()
 }
 
-func title() string {
-	style := lipgloss.NewStyle().
-		BorderStyle(lipgloss.DoubleBorder()).
-		BorderForeground(goldYellow).
-		BorderBottom(true).
-		Foreground(goldYellow)
-
-	return style.Width(width).Render("Daylight") + "\n"
-}
-
-func subHead() string {
-	style := lipgloss.NewStyle().
-		BorderBottom(true).
-		Foreground(brightBlue).
-		Padding(1, 0, 0, 0)
-
-	return style.Width(width).Render("Today's sun times") + "\n"
+func todayTitle() string {
+	return titleBarStyle.Render("Today's daylight") + "\n"
 }
 
 func today() string {
 	graphic := lipgloss.NewStyle().
-		Align(lipgloss.Left).
-		Width(16)
+		Width(8)
 
 	col := lipgloss.NewStyle().
-		Align(lipgloss.Left).
-		Width(25).
+		Align(lipgloss.Center).
+		Width(17).
+		Padding(1, 0).
 		Height(8)
 
-	rises := drawPixels(sunrise)
-	sets := drawPixels(sunset)
+	rises := drawPixels(sunriseGradient)
+	sets := drawPixels(sunsetGradient)
+	noon := drawPixels(noonGradient)
 
 	return lipgloss.JoinHorizontal(lipgloss.Top,
 		graphic.Render(rises),
-		col.Align(lipgloss.Left).Render("Rises at"),
+		col.Render("Rises\n08:45 am"),
+		graphic.Render(noon),
+		col.Render("Noon\n12:32 pm"),
 		graphic.Render(sets),
-		col.Align(lipgloss.Left).Render("sets at"),
-		col.Align(lipgloss.Right).Render("LENGTH------------------"))
-	// ════════════════════════════════════════════════════════════════════════════════════════════════════
-	//  RISES--------------------  NOON---------------------  SETS---------------------  LENGTH------------------ .
+		col.Render("Sets\n19:45 pm"),
+	) + "\n"
+}
+
+func lengthTitle() string {
+	return titleBarStyle.Render("Day length") + "\n"
+}
+
+func dayLength() string {
+	col := lipgloss.NewStyle().
+		Align(lipgloss.Center).
+		Width(35).
+		Height(4)
+
+	return lipgloss.JoinHorizontal(lipgloss.Top,
+		col.Render("Sunrise to sunset\n12h 45m"),
+		col.Render("Longer than yesterday\n+3m 04s"),
+	) + "\n"
 }
 
 func drawPixels(px [][]uint) string {
