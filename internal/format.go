@@ -2,8 +2,8 @@ package internal
 
 import (
 	"fmt"
-	"time"
 	"strings"
+	"time"
 
 	"golang.org/x/term"
 
@@ -40,7 +40,7 @@ func FormatLengthDiff(today SunTimes, yesterday SunTimes) string {
 	}
 
 	if direction == 0 {
-		return "the same as yesterday"
+		return "the same"
 	}
 
 	prefix := "+"
@@ -52,7 +52,7 @@ func FormatLengthDiff(today SunTimes, yesterday SunTimes) string {
 	h, m, s := durationHMS(diff)
 	mins := m + (h * 60)
 
-	return fmt.Sprintf("%s%dm %ds vs yesterday", prefix, mins, s)
+	return fmt.Sprintf("%s%dm %ds", prefix, mins, s)
 }
 
 func FormatNoon(s SunTimes, tz *time.Location) string {
@@ -72,14 +72,14 @@ func FormatRises(s SunTimes, tz *time.Location) string {
 	if (s.Rises == time.Time{}) {
 		return "n/a"
 	}
-  return LocalisedTime(s.Rises, tz)
+	return LocalisedTime(s.Rises, tz)
 }
 
 func FormatSets(s SunTimes, tz *time.Location) string {
 	if (s.Sets == time.Time{}) {
 		return "n/a"
 	}
-  return LocalisedTime(s.Sets, tz)
+	return LocalisedTime(s.Sets, tz)
 }
 
 func UsePrettyMode() bool {
@@ -106,13 +106,13 @@ func Sunnify(s string) string {
 
 	yellow := color.New(color.FgHiYellow, color.Bold)
 
-  var output string
+	var output string
 	for lineN, lineIn := range ins {
-    lineOut := ""
+		lineOut := ""
 
-    if lineN >= len(sunLines) {
+		if lineN >= len(sunLines) {
 			// "Picture" is complete, skip concatenations
-      lineOut = lineIn
+			lineOut = lineIn
 
 		} else {
 			lineOut = padToLength(lineIn, 40)
