@@ -82,6 +82,26 @@ func FormatSets(s SunTimes, tz *time.Location) string {
 	return LocalisedTime(s.Sets, tz)
 }
 
+func FormatDayRatio(s SunTimes, tz *time.Location, hourSteps int) (start int, end int) {
+	if s.PolarDay {
+		return 0, 100
+	}
+
+	if s.PolarNight {
+		return 0, 0
+	}
+
+	minsPerStep := 60 / hourSteps
+
+	riseH, riseM, _ := s.Rises.In(tz).Clock()
+	start = (riseH * hourSteps) + (riseM / minsPerStep)
+
+	setsH, setsM, _ := s.Sets.In(tz).Clock()
+	end = (setsH * hourSteps) + (setsM / minsPerStep)
+
+	return start, end
+}
+
 func UsePrettyMode() bool {
 	if !term.IsTerminal(0) {
 		return false

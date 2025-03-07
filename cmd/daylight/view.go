@@ -14,15 +14,11 @@ const (
 	width = 76
 
 	brightBlue  = lipgloss.Color("#005FFF")
-	brightGreen = lipgloss.Color("#00aF00")
+	brightGreen = lipgloss.Color("#00AF00")
 	goldYellow  = lipgloss.Color("#FDC400")
-	sunYellow   = lipgloss.Color("#EDFF82")
 	offWhite    = lipgloss.Color("#FFFDF5")
 	pink        = lipgloss.Color("#A550DF")
-	purple      = "#6124DF"
-	midGrey     = lipgloss.Color("#525250")
 	dimGrey     = lipgloss.Color("#353533")
-	lightGrey   = lipgloss.Color("#CFCDC5")
 )
 
 var (
@@ -33,32 +29,6 @@ var (
 		MarginBottom(1).
 		Foreground(goldYellow).
 		Width(width)
-
-	statusBarStyle = lipgloss.NewStyle().
-		Foreground(lipgloss.AdaptiveColor{Light: "#343433", Dark: "#C1C6B2"}).
-		Background(lipgloss.AdaptiveColor{Light: "#D9DCCF", Dark: "#353533"})
-
-	locationTagStyle = lipgloss.NewStyle().
-		Inherit(statusBarStyle).
-		Foreground(offWhite).
-		Background(lipgloss.Color(brightGreen)).
-		Padding(0, 1).
-		MarginRight(1)
-
-	locationTextStyle = lipgloss.NewStyle().Inherit(statusBarStyle)
-
-	// rename
-	ipBlockStyles = lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#FFFDF5")).
-		Padding(0, 1)
-
-	// rename
-	ipValStyle = ipBlockStyles.
-		Background(goldYellow).
-		Align(lipgloss.Right)
-
-	// rename
-	ipTagStyle = ipBlockStyles.Background(brightBlue)
 )
 
 func render(vm internal.TodayViewModel) string {
@@ -69,7 +39,7 @@ func render(vm internal.TodayViewModel) string {
 
 	doc.WriteString(lengthTitle())
 	doc.WriteString(dayLength(vm))
-	doc.WriteString(dayBar())
+	doc.WriteString(dayBar(vm))
 
 	doc.WriteString(nextDaysTitle())
 	doc.WriteString(projection())
@@ -133,13 +103,13 @@ func dayLength(vm internal.TodayViewModel) string {
 	) + "\n"
 }
 
-func dayBar() string {
+func dayBar(vm internal.TodayViewModel) string {
 	night := lipgloss.NewStyle().Background(dimGrey).Foreground(dimGrey)
 	day := lipgloss.NewStyle().Background(brightBlue).Foreground(brightBlue)
 	bar := lipgloss.NewStyle().Padding(1)
 
-	dayStart := 20
-	dayEnd := 50
+	dayStart := vm.DayStartRatio
+	dayEnd := vm.DayEndRatio
 
 	text := strings.Builder{}
 	for i := 0; i <= 72; i++ {
@@ -190,23 +160,6 @@ func statusBar(viewmodel internal.TodayViewModel) string {
 		blueTag.Render(sIPAddress),
 		goldTag.Render(sIPData),
 	) + "\n"
-}
-
-func drawPixels(px [][]uint) string {
-	builder := strings.Builder{}
-	style := lipgloss.NewStyle()
-
-	for _, row := range px {
-		for j, cell := range row {
-			colour := lipgloss.Color(ABGRtoHex(cell))
-			builder.WriteString(style.Background(colour).Render("  "))
-			if j == len(row)-1 {
-				builder.WriteString("\n")
-			}
-		}
-	}
-
-	return builder.String()
 }
 
 func projection() string {
@@ -261,4 +214,21 @@ func linkString() string {
 		Padding(1, 0, 0)
 
 	return style.Render("https://github.com/jbreckmckye/daylight") + "\n"
+}
+
+func drawPixels(px [][]uint) string {
+	builder := strings.Builder{}
+	style := lipgloss.NewStyle()
+
+	for _, row := range px {
+		for j, cell := range row {
+			colour := lipgloss.Color(ABGRtoHex(cell))
+			builder.WriteString(style.Background(colour).Render("  "))
+			if j == len(row)-1 {
+				builder.WriteString("\n")
+			}
+		}
+	}
+
+	return builder.String()
 }
