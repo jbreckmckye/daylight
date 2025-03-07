@@ -47,6 +47,12 @@ func main() {
 		checkErr(err)
 	}
 
+	projections := daylight.ProjectedStats(now, timezone, latlong, 10)
+	fmt.Println("Forward projections:")
+	for _, v := range projections {
+		fmt.Printf("%v\n", v)
+	}
+
 	viewmodel := daylight.TodayStats(now, timezone, latlong, ipInfo.IP)
 
 	tmpl := templates.TodayTemplate()

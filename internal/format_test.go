@@ -26,7 +26,7 @@ func TestFormatDayLength(t *testing.T) {
 				PolarNight: true,
 				Length:     0,
 			},
-			Want: "none (polar night)",
+			Want: "no time (polar night)",
 		},
 		{
 			SunTimes: SunTimes{

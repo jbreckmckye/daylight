@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
@@ -35,7 +36,7 @@ func render(vm internal.TodayViewModel) string {
 	doc := strings.Builder{}
 
 	doc.WriteString(todayTitle())
-	doc.WriteString(today())
+	doc.WriteString(today(vm))
 
 	doc.WriteString(lengthTitle())
 	doc.WriteString(dayLength(vm))
@@ -55,7 +56,7 @@ func todayTitle() string {
 	return titleBarStyle.Render("Today's daylight") + "\n"
 }
 
-func today() string {
+func today(vm internal.TodayViewModel) string {
 	graphic := lipgloss.NewStyle().
 		Width(5)
 
@@ -74,11 +75,11 @@ func today() string {
 
 	contents := lipgloss.JoinHorizontal(lipgloss.Top,
 		graphic.Render(rises),
-		col.Render("Rises\n08:45 am"),
+		col.Render("Rises\n"+vm.Rise),
 		graphic.Render(noon),
-		col.Render("Noon\n12:32 pm"),
+		col.Render("Noon\n"+vm.Noon),
 		graphic.Render(sets),
-		col.Render("Sets\n19:45 pm"),
+		col.Render("Sets\n"+vm.Sets),
 	)
 
 	return wrap.Render(contents) + "\n"
@@ -94,8 +95,8 @@ func dayLength(vm internal.TodayViewModel) string {
 		Width(35).
 		Height(2)
 
-	summary := fmt.Sprintf("Daylight for\n%s", vm.Len)
-	yesterday := fmt.Sprintf("versus yesterday\n%s", vm.Diff)
+	summary := fmt.Sprintf("Daylight for:\n%s", vm.Len)
+	yesterday := fmt.Sprintf("versus yesterday:\n%s", vm.Diff)
 
 	return lipgloss.JoinHorizontal(lipgloss.Top,
 		col.Render(summary),
@@ -104,15 +105,25 @@ func dayLength(vm internal.TodayViewModel) string {
 }
 
 func dayBar(vm internal.TodayViewModel) string {
+	barWidth := 72
+
 	night := lipgloss.NewStyle().Background(dimGrey).Foreground(dimGrey)
 	day := lipgloss.NewStyle().Background(brightBlue).Foreground(brightBlue)
 	bar := lipgloss.NewStyle().Padding(1)
 
-	dayStart := vm.DayStartRatio
-	dayEnd := vm.DayEndRatio
+	if vm.DayEndRatio == 0 {
+		// Polar night
+		return bar.Render(night.Width(barWidth).Render(" ")) + "\n"
+	} else if vm.DayEndRatio == 1 {
+		// Polar day
+		return bar.Render(day.Width(barWidth).Render(" ")) + "\n"
+	}
+
+	dayStart := int(math.Round(vm.DayStartRatio * float64(barWidth)))
+	dayEnd := int(math.Round(vm.DayEndRatio * float64(barWidth)))
 
 	text := strings.Builder{}
-	for i := 0; i <= 72; i++ {
+	for i := 0; i <= barWidth; i++ {
 		if i == dayStart {
 			// Mark sunrise with "R"
 			text.WriteString(day.Render("R"))

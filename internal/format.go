@@ -22,7 +22,7 @@ func FormatDayLength(s SunTimes) string {
 	}
 
 	if s.PolarNight {
-		return "none (polar night)"
+		return "no time (polar night)"
 	}
 
 	h, m, _ := durationHMS(s.Length)
@@ -82,24 +82,28 @@ func FormatSets(s SunTimes, tz *time.Location) string {
 	return LocalisedTime(s.Sets, tz)
 }
 
-func FormatDayRatio(s SunTimes, tz *time.Location, hourSteps int) (start int, end int) {
+func FormatDate(t time.Time) string {
+	return t.Format("Mon Jan 02")
+}
+
+func FormatDayRatio(s SunTimes, tz *time.Location) (start float64, end float64) {
 	if s.PolarDay {
-		return 0, 100
+		return 0, 1
 	}
 
 	if s.PolarNight {
 		return 0, 0
 	}
 
-	minsPerStep := 60 / hourSteps
+	dayMins := float64(24 * 60)
 
 	riseH, riseM, _ := s.Rises.In(tz).Clock()
-	start = (riseH * hourSteps) + (riseM / minsPerStep)
+	rises := float64((riseH * 60) + riseM)
 
 	setsH, setsM, _ := s.Sets.In(tz).Clock()
-	end = (setsH * hourSteps) + (setsM / minsPerStep)
+	sets := float64((setsH * 60) + setsM)
 
-	return start, end
+	return rises / dayMins, sets / dayMins
 }
 
 func UsePrettyMode() bool {
