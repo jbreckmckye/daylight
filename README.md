@@ -42,7 +42,7 @@ There is a Windows binary but I haven't been able to test this. Let me know if y
 daylight
 
 # Override the IP location and timezone
-daylight -loc-"-33.92,18.42" --timezone "Africa/Johannesburg"
+daylight --loc "-33.92,18.42" --timezone "Africa/Johannesburg"
 
 # Short summary of the data
 daylight --short
