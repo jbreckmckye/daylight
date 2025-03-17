@@ -12,7 +12,7 @@ import (
 	daylight "github.com/jbreckmckye/daylight/internal"
 )
 
-func main() {
+func main2() {
 	log.SetPrefix("[daylength] ")
 	log.SetFlags(0)
 
