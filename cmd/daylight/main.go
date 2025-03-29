@@ -17,10 +17,11 @@ func main() {
 	log.SetFlags(0)
 
 	var args struct {
-		Short    bool   `help:"Show in condensed format"`
-		Loc      string `help:"Set latitude, longitude in format 'NN.nn,NN.nn'"`
-		Date     string `help:"Date in YYYY-MM-DD"`
-		Timezone string `help:"Timezone e.g. 'Europe/London'"`
+		Short      bool   `help:"Show in condensed format"`
+		Loc        string `help:"Set latitude, longitude in format 'NN.nn,NN.nn'"`
+		Date       string `help:"Date in YYYY-MM-DD"`
+		Timezone   string `help:"Timezone e.g. 'Europe/London'"`
+		HourFormat string `help:"Hour format: '12h' or '24h'"`
 	}
 
 	arg.MustParse(&args)
@@ -44,8 +45,11 @@ func main() {
 		now, err = time.Parse(time.DateOnly, args.Date)
 		checkErr(err)
 	}
+	if args.HourFormat != "12h" && args.HourFormat != "24h" && args.HourFormat != "" {
+		log.Fatalf("Invalid hour format: %s; Supported formats: 12h, 24h. The default is 24h with a meridian.", args.HourFormat)
+	}
 
-	todayView := daylight.TodayStats(now, timezone, latlong, ipInfo.IP)
+	todayView := daylight.TodayStats(now, timezone, latlong, ipInfo.IP, args.HourFormat)
 
 	if args.Short {
 		fmt.Printf(

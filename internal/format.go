@@ -5,8 +5,14 @@ import (
 	"time"
 )
 
-func LocalisedTime(t time.Time, tz *time.Location) string {
-	return t.In(tz).Format("15:04 PM")
+func LocalisedTime(t time.Time, tz *time.Location, hf string) string {
+	if hf == "12h" {
+		return t.In(tz).Format("03:04 PM")
+	} else if hf == "24h" {
+		return t.In(tz).Format("15:04")
+	} else {
+		return t.In(tz).Format("15:04 PM")
+	}
 }
 
 func FormatDayLength(s SunTimes) string {
@@ -48,7 +54,7 @@ func FormatLengthDiff(today SunTimes, yesterday SunTimes) string {
 	return fmt.Sprintf("%s%dm %ds", prefix, mins, s)
 }
 
-func FormatNoon(s SunTimes, tz *time.Location) string {
+func FormatNoon(s SunTimes, tz *time.Location, hourFormat string) string {
 	if s.PolarDay {
 		return "n/a"
 	}
@@ -58,21 +64,21 @@ func FormatNoon(s SunTimes, tz *time.Location) string {
 	}
 
 	noon := s.ApproximateNoon()
-	return LocalisedTime(noon, tz)
+	return LocalisedTime(noon, tz, hourFormat)
 }
 
-func FormatRises(s SunTimes, tz *time.Location) string {
+func FormatRises(s SunTimes, tz *time.Location, hourFormat string) string {
 	if (s.Rises == time.Time{}) {
 		return "n/a"
 	}
-	return LocalisedTime(s.Rises, tz)
+	return LocalisedTime(s.Rises, tz, hourFormat)
 }
 
-func FormatSets(s SunTimes, tz *time.Location) string {
+func FormatSets(s SunTimes, tz *time.Location, hourFormat string) string {
 	if (s.Sets == time.Time{}) {
 		return "n/a"
 	}
-	return LocalisedTime(s.Sets, tz)
+	return LocalisedTime(s.Sets, tz, hourFormat)
 }
 
 func FormatDate(t time.Time) string {
