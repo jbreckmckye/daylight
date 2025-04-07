@@ -1,4 +1,4 @@
-package internal
+package new
 
 import (
 	"fmt"
@@ -40,9 +40,17 @@ func LocationToLatLong(loc string) (LatLong, error) {
 		return result, parseError
 	}
 
+	if lat < -90 || lat > 90 {
+		return result, fmt.Errorf("latitude must be between -90 and 90, was %f", lat)
+	}
+
 	lng, err := strconv.ParseFloat(parts[1], 64)
 	if err != nil {
 		return result, parseError
+	}
+
+	if lng < -180 || lng > 180 {
+		return result, fmt.Errorf("longitude must be between -180 and 180, was %f", lng)
 	}
 
 	result.Lat = lat

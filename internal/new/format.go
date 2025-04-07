@@ -1,4 +1,4 @@
-package internal
+package new
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 )
 
 func LocalisedTime(t time.Time, tz *time.Location) string {
-	return t.In(tz).Format("15:04 PM")
+	return t.In(tz).Format("15:04")
 }
 
 func FormatDayLength(s SunTimes) string {

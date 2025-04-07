@@ -1,12 +1,17 @@
 package main
 
 import (
+	"log"
 	"os"
 
-	"github.com/jbreckmckye/daylight/internal/cmd"
+	"github.com/jbreckmckye/daylight/internal/new"
 )
 
 func main() {
-	code := cmd.Daylight()
-	os.Exit(code)
+	log.SetPrefix("[daylight] ")
+	log.SetFlags(0)
+
+	code := new.Daylight()
+
+	os.Exit(int(code))
 }
