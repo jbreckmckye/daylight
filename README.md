@@ -41,8 +41,8 @@ There is a Windows binary but I haven't been able to test this. Let me know if y
 # Today's data for your IP location
 daylight
 
-# Override the IP location and timezone
-daylight --loc="-33.92,18.42" --timezone="Africa/Johannesburg"
+# Override the IP location and timezone (allows offline operation)
+daylight --latitude="-33.92" --longitude="18.42" --timezone="Africa/Johannesburg"
 
 # Short summary of the data
 daylight --short

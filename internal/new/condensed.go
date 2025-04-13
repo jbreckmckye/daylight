@@ -36,8 +36,8 @@ func Condensed(query DaylightQuery) CondensedView {
 	)
 
 	return CondensedView{
-		Rises:  LocalisedTime(today.Rises, &query.TZ),
-		Sets:   LocalisedTime(today.Sets, &query.TZ),
+		Rises:  FormatRises(today, &query.TZ),
+		Sets:   FormatSets(today, &query.TZ),
 		Length: FormatDayLength(today),
 		Change: FormatLengthDiff(today, yesterday),
 	}

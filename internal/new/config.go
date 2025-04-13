@@ -44,7 +44,7 @@ func (cfg *Config) DaylightQuery() DaylightQuery {
 		cfg.Condensed = &val
 	}
 	if cfg.IP == nil {
-		val := ""
+		val := "n/a"
 		cfg.IP = &val
 	}
 
