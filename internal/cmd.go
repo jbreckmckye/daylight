@@ -1,4 +1,4 @@
-package new
+package internal
 
 import (
 	"fmt"
@@ -54,7 +54,7 @@ func Daylight() exitCode {
 
 		config.FillValues(configFromAPI)
 	} else {
-		log.Println("offline operation")
+		fmt.Printf("\nOffline operation 💾\n")
 	}
 
 	// Sanity check - this should never fail, but...

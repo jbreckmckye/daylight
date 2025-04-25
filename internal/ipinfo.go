@@ -1,4 +1,4 @@
-package new
+package internal
 
 import (
 	"encoding/json"

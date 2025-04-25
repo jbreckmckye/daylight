@@ -25,7 +25,7 @@ test-manual: clean build
 	./build/daylight --latitude -90 --longitude 0 --date="2025-01-02"
 	echo "=====[TEST POLAR NIGHT]====="
 	./build/daylight --latitude="82.4" --longitude -14.3 --date="2025-01-02"
-	echo "=====[TEST CAPE TOWN]====="
+	echo "=====[TEST CAPE TOWN, OFFLINE]====="
 	./build/daylight --date="2025-02-03" --latitude="-33.92" --longitude 18.42 --timezone "Africa/Johannesburg"
 	echo "=====[TEST NOCOLOR]====="
 	NO_COLOR=true ./build/daylight
