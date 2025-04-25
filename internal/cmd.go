@@ -66,7 +66,7 @@ func Daylight() exitCode {
 	query := config.DaylightQuery()
 
   if query.Condensed {
-    viewmodel := Condensed(query)
+		viewmodel := Condensed(query)
 		formatted := viewmodel.FormatString()
 		fmt.Print(formatted)
 

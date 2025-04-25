@@ -7,15 +7,13 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-
 )
 
 // IPInfo is the data we get from the IPInfo API
 type IPInfo struct {
-	IP      string `json:"ip"`
-	Loc     string `json:"loc"`
-	TZ      string `json:"timezone"`
+	IP  string `json:"ip"`
+	Loc string `json:"loc"`
+	TZ  string `json:"timezone"`
 }
 
 const ipinfoUrl = "https://ipinfo.io/json?inc=ip,loc,timezone"
@@ -42,7 +40,7 @@ func FetchIPInfo() (IPInfo, error) {
 // Config turns an IPInfo result into a Config, performing validation
 func (inf *IPInfo) Config() (cfg Config, err error) {
 	// API Loc -> config Latitude, Longitude
-  if inf.Loc == "" {
+	if inf.Loc == "" {
 		return cfg, fmt.Errorf("IPInfo did not return location data")
 	}
 
@@ -53,7 +51,7 @@ func (inf *IPInfo) Config() (cfg Config, err error) {
 
 	cfg.Latitude = &latlong.Lat
 	cfg.Longitude = &latlong.Lng
-	
+
 	// API TZ -> config Timezone
 	if inf.TZ == "" {
 		return cfg, fmt.Errorf("IPInfo did not return timezone data")
