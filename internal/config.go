@@ -26,7 +26,7 @@ func (cfg *Config) MissingFields() error {
 	if cfg.Timezone == nil {
 		return errors.New("missing Timezone data")
 	}
-	// Others should never be nil
+	// Others (forDate, condensed, ip) can be defaulted
 
 	return nil
 }
@@ -34,7 +34,7 @@ func (cfg *Config) MissingFields() error {
 // DaylightQuery turns a Config with nullable values into a DaylightQuery with non-nullables.
 // Call MissingFields() first to validate.
 func (cfg *Config) DaylightQuery() DaylightQuery {
-  // Set defaults
+	// Set defaults
 	if cfg.ForDate == nil {
 		val := time.Now()
 		cfg.ForDate = &val
@@ -47,7 +47,6 @@ func (cfg *Config) DaylightQuery() DaylightQuery {
 		val := "n/a"
 		cfg.IP = &val
 	}
-
 
 	// Apply timezone to date
 	*cfg.ForDate = cfg.ForDate.In(cfg.Timezone)
@@ -76,7 +75,7 @@ func (cfg *Config) FillValues(cfg2 Config) {
 	if cfg.ForDate == nil {
 		cfg.ForDate = cfg2.ForDate
 	}
-  if cfg.Condensed == nil {
+	if cfg.Condensed == nil {
 		cfg.Condensed = cfg2.Condensed
 	}
 	if cfg.IP == nil {
