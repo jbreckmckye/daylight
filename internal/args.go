@@ -21,7 +21,7 @@ func (args *Arguments) ReadFromCLI() {
 	arg.MustParse(args)
 }
 
-// Config turns an Arguments obj into a Config, performing validation
+// Config() turns an Arguments obj into a Config, performing validation
 func (args *Arguments) Config() (cfg Config, err error) {
 	if (args.Latitude == nil) != (args.Longitude == nil) {
 		return cfg, fmt.Errorf("--latitude and --longitude must both be set, if used")

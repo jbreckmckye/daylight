@@ -63,55 +63,58 @@ colour scheme. In this case you can use `NO_COLOR` to disable any colours
 ```
 $ NO_COLOR=true daylight
 
-Today's daylight
+Today's daylight                                                            
 ════════════════════════════════════════════════════════════════════════════
-
-
-             Rises                 Noon                  Sets
-           06:30 AM              12:11 PM              17:52 PM
-
-
-
-Day length
+                                                                            
+                                                                      
+             Rises                 Noon:                 Sets:        
+             05:41                 12:58                 20:14        
+                                                                      
+                                                                      
+                                                                      
+Day length                                                                  
 ════════════════════════════════════════════════════════════════════════════
-
-           Daylight for:                    versus yesterday:
-          11 hrs, 22 mins                        +3m 58s
-
- ....................R---------------------------------S..................
-
-Ten day projection
+                                                                            
+           Daylight for:                    versus yesterday:         
+          14 hrs, 32 mins                        +3m 39s              
+                                                                           
+ .................R-------------------------------------------S........... 
+                                                                           
+Ten day projection                                                          
 ════════════════════════════════════════════════════════════════════════════
-
-   ┌────────────────┬──────────────┬──────────────┬─────────────────────┐
-   │      DATE      │   SUNRISE    │    SUNSET    │       LENGTH        │
-   ├────────────────┼──────────────┼──────────────┼─────────────────────┤
-   │   Sun Mar 09   │   06:28 AM   │   17:54 PM   │   11 hrs, 26 mins   │
-   │   Mon Mar 10   │   06:25 AM   │   17:55 PM   │   11 hrs, 30 mins   │
-   │   Tue Mar 11   │   06:23 AM   │   17:57 PM   │   11 hrs, 34 mins   │
-   │   Wed Mar 12   │   06:21 AM   │   17:59 PM   │   11 hrs, 37 mins   │
-   │   Thu Mar 13   │   06:19 AM   │   18:01 PM   │   11 hrs, 41 mins   │
-   │   Fri Mar 14   │   06:16 AM   │   18:02 PM   │   11 hrs, 45 mins   │
-   │   Sat Mar 15   │   06:14 AM   │   18:04 PM   │   11 hrs, 49 mins   │
-   │   Sun Mar 16   │   06:12 AM   │   18:06 PM   │   11 hrs, 53 mins   │
-   │   Mon Mar 17   │   06:09 AM   │   18:07 PM   │   11 hrs, 57 mins   │
-   │   Tue Mar 18   │   06:07 AM   │   18:09 PM   │   12 hrs, 1 mins    │
-   └────────────────┴──────────────┴──────────────┴─────────────────────┘
-
-Your stats
+                                                                            
+      ┌────────────────┬───────────┬───────────┬─────────────────────┐      
+      │      DATE      │  SUNRISE  │   SUNSET  │       LENGTH        │      
+      ├────────────────┼───────────┼───────────┼─────────────────────┤      
+      │   Sun Apr 27   │   05:39   │   20:16   │   14 hrs, 36 mins   │      
+      │   Mon Apr 28   │   05:37   │   20:17   │   14 hrs, 40 mins   │      
+      │   Tue Apr 29   │   05:35   │   20:19   │   14 hrs, 43 mins   │      
+      │   Wed Apr 30   │   05:33   │   20:21   │   14 hrs, 47 mins   │      
+      │   Thu May 01   │   05:32   │   20:22   │   14 hrs, 50 mins   │      
+      │   Fri May 02   │   05:30   │   20:24   │   14 hrs, 54 mins   │      
+      │   Sat May 03   │   05:28   │   20:26   │   14 hrs, 57 mins   │      
+      │   Sun May 04   │   05:26   │   20:27   │   15 hrs, 1 mins    │      
+      │   Mon May 05   │   05:24   │   20:29   │   15 hrs, 4 mins    │      
+      │   Tue May 06   │   05:23   │   20:31   │   15 hrs, 8 mins    │      
+      └────────────────┴───────────┴───────────┴─────────────────────┘      
+                                                                            
+Your stats                                                                  
 ════════════════════════════════════════════════════════════════════════════
+                                                                            
+ LOCATION  Latitude 51.51, Longitude -0.1257        IP ADDRESS  146.90.4.96 
+                                                                            
+https://github.com/jbreckmckye/daylight                                     
 
- LOCATION  Latitude 51.51, Longitude -0.1257        IP ADDRESS  146.90.4.96
 ```
 
 There is also a short summary mode
 
 ```
 $ daylight --short
-Rises:  06:30 AM
-Sets:   17:52 PM
-Length: 11 hrs, 22 mins
-Change:  +3m 58s
+Rises:  05:41
+Sets:   20:14
+Length: 14 hrs, 32 mins
+Change: +3m 39s
 ```
 
 ## Codebase

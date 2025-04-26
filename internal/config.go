@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// Config is a helper type for constructing configuration from multiple sources. All fields are nullable.
+// Config is a helper that constructs configuration from multiple sources. All fields are nullable.
 type Config struct {
 	Latitude  *float64
 	Longitude *float64
@@ -32,7 +32,7 @@ func (cfg *Config) MissingFields() error {
 }
 
 // DaylightQuery turns a Config with nullable values into a DaylightQuery with non-nullables.
-// Call MissingFields() to avoid panics.
+// Call MissingFields() first to validate.
 func (cfg *Config) DaylightQuery() DaylightQuery {
   // Set defaults
 	if cfg.ForDate == nil {

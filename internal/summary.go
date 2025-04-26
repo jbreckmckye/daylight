@@ -4,6 +4,7 @@ import (
 	"strconv"
 )
 
+// Summary supports a more detailed display mode
 type SummaryView struct {
 	Lat           string
 	Lng           string
