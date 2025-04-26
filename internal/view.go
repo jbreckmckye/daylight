@@ -37,7 +37,7 @@ var titleBarStyle = lipgloss.NewStyle().
 	Foreground(goldYellow).
 	Width(width)
 
-func render(sv SummaryView) string {
+func Render(sv SummaryView) string {
 	doc := strings.Builder{}
 
 	doc.WriteString("\n")
@@ -54,8 +54,16 @@ func render(sv SummaryView) string {
 	doc.WriteString(about())
 	doc.WriteString(statusBar(sv))
 	doc.WriteString(linkString())
+	doc.WriteString("\n")
 
 	return doc.String()
+}
+
+func Offline() string {
+	style := lipgloss.NewStyle().
+	  Foreground(goldYellow)
+
+	return style.Render("\nOffline mode\n")
 }
 
 func todayTitle() string {

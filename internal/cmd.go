@@ -54,7 +54,7 @@ func Daylight() exitCode {
 
 		config.FillValues(configFromAPI)
 	} else {
-		fmt.Printf("\nOffline operation 💾\n")
+		fmt.Print(Offline())
 	}
 
 	// Sanity check - this should never fail, but...
@@ -74,8 +74,8 @@ func Daylight() exitCode {
 	}
 
 	viewmodel := Summary(query)
-	rendered := render(viewmodel)
-	fmt.Println(rendered)
+	formatted := viewmodel.FormatString()
+	fmt.Print(formatted)
 
 	return exitOK
 }

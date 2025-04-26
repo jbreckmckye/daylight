@@ -19,6 +19,10 @@ type SummaryView struct {
 	Next10Days    []DayProjection
 }
 
+func (sv *SummaryView) FormatString() string {
+	return Render(*sv)
+}
+
 type DayProjection struct {
 	Day    string
 	Rise   string
