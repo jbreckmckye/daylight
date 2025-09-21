@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 
+	_ "time/tzdata"
+
 	"github.com/jbreckmckye/daylight/internal"
 )
 
