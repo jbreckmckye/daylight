@@ -24,7 +24,7 @@ type DaylightQuery struct {
 	Json      bool
 }
 
-func Daylight() ExitCode {
+func Daylight(version string) ExitCode {
 	defer func() {
 		r := recover()
 		if r != nil {
@@ -35,6 +35,12 @@ func Daylight() ExitCode {
 	// Read configuration from user supplied arguments
 	args := Arguments{}
 	args.ReadFromCLI()
+
+	if args.Version != nil && *args.Version {
+		fmt.Println(version)
+		return exitOK
+	}
+	
 	config, err := args.Config()
 	if err != nil {
 		return fatal(err)
