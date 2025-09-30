@@ -15,6 +15,7 @@ type Arguments struct {
 	Date      *string  `help:"Date in YYYY-MM-DD"`
 	Short     *bool    `help:"Show in condensed format"`
 	Json      *bool    `help:"Short JSON output"`
+	Version   *bool    `help:"Show version"`
 }
 
 // ReadFromCLI reads command line flags into Arguments
