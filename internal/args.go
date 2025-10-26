@@ -3,7 +3,9 @@ package internal
 import (
 	"fmt"
 	"time"
-
+	"os"
+	"strings"
+	"os/exec"
 	"github.com/alexflint/go-arg"
 )
 
@@ -18,9 +20,29 @@ type Arguments struct {
 	Version   *bool    `help:"Show version"`
 }
 
-// ReadFromCLI reads command line flags into Arguments
+func (args *Arguments) Epilogue() string {
+	return "Environment variables: COORDINATES[_CMD], TZ"
+}
+
+// ReadFromCLI reads command line flags and environment variables into Arguments
 func (args *Arguments) ReadFromCLI() {
 	arg.MustParse(args)
+	if args.Latitude == nil && args.Longitude == nil {
+		latlong, found, err := EnvironmentCoordinates()
+		if err != nil {
+			panic(err)
+		}
+		if found {
+			args.Latitude = &latlong.Lat
+			args.Longitude = &latlong.Lng
+		}
+	}
+	if args.Timezone == nil {
+		timezone := os.Getenv("TZ")
+		if timezone != "" {
+			args.Timezone = &timezone
+		}
+	}
 }
 
 // Config turns an Arguments obj into an internal.Config, performing validation
@@ -45,6 +67,8 @@ func (args *Arguments) Config() (cfg Config, err error) {
 		if err != nil {
 			return cfg, fmt.Errorf("--timezone was not found")
 		}
+	} else {
+		cfg.Timezone = time.Now().Location()
 	}
 
 	if args.Date != nil {
@@ -64,4 +88,34 @@ func (args *Arguments) Config() (cfg Config, err error) {
 	}
 
 	return cfg, nil
+}
+
+func EnvironmentCoordinates() (latlong LatLong, found bool, err error) {
+	var coordinates      string
+	var coordinatesCmd []string
+
+	coordinates = os.Getenv("COORDINATES")
+	coordinatesCmd = strings.Fields(os.Getenv("COORDINATES_CMD"))
+
+	switch {
+	case coordinates != "":
+	case len(coordinatesCmd) >= 1:
+		var cmd  *exec.Cmd
+		var out []byte
+		cmd = exec.Command(coordinatesCmd[0], coordinatesCmd[1:]...)
+		out, err = cmd.Output()
+		if err != nil {
+			return
+		}
+		coordinates = strings.TrimSpace(string(out))
+	default:
+		return
+	}
+
+	latlong, err = locationToLatLong(coordinates)
+	if err != nil {
+		return
+	}
+	found = true
+	return
 }
