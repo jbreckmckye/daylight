@@ -30,6 +30,8 @@ brew install daylight
 daylight --help
 ```
 
+You might need to run `brew trust --formula jbreckmckye/formulae/daylight`
+
 ### Manual installation (and Windows)
 
 Pick up the executable for your system in the [releases](https://github.com/jbreckmckye/daylight/releases).
@@ -118,6 +120,22 @@ Rises:  05:41
 Sets:   20:14
 Length: 14 hrs, 32 mins
 Change: +3m 39s
+```
+
+And a JSON mode
+
+```
+$ daylight --json
+{
+  "rises": "06:04",
+  "noon": "13:06",
+  "sets": "20:09",
+  "length": "14 hrs, 4 mins",
+  "change": "-3m 57s",
+  "latitude": "52.953600",
+  "longitude": "-1.150500",
+  "timezone": "Europe/London"
+}
 ```
 
 ## Codebase
